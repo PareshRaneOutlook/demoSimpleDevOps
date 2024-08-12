@@ -332,7 +332,7 @@
 	
 	ansible all -m ping
 
-   ```
+   	```
 
 #	5 EKS Bootstrap Server
 	```sh
