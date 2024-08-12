@@ -334,7 +334,7 @@
 
    ```
 
-#	6 setup EKS bootstrap Server
+#	5 KEKS Bootstrap Server
 	```sh
 	Setup Kubernetes on Amazon EKS
 
