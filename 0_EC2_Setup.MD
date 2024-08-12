@@ -1,11 +1,11 @@
-### Pre-requitsite
+# 0 Pre-requitsite
+	```sh
 		AWS Account
 		VS Code
-		
 		Download https://mobaxterm.mobatek.net/download-home-edition.html
-BUILD CODE
-
+	```
 # 1 Setup Jenkins Sever
+	```sh
 		EC2 instance (Linux AMI 2) free tier
 			If its already ready just use command 
 				service jenkins start on mobxterm
@@ -107,15 +107,15 @@ BUILD CODE
 				configure maven and java
 					Manage Jenkins >> Tools >> Setup 
 						In tools add java_home and maven
-
+	```
 # 2 Setup Tomcat Sever
-
+	```sh
 	### Pre-requisites
 	1. EC2 instance with Java 11
 		amazon-linux-extras install java-openjdk11 -y
 
 	### Install Apache Tomcat
-	```sh
+	
 	1. Download tomcat packages from  https://tomcat.apache.org/download-80.cgi onto /opt on EC2 instance
 		cd /opt
 		wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.91/bin/apache-tomcat-9.0.91.tar.gz
@@ -126,32 +126,32 @@ BUILD CODE
 		
 		http://<Public_IP>:8080
 		
-	```
+
 	1. give executing permissions to startup.sh and shutdown.sh which are under bin. 
-	```sh
+	
 	chmod +x /opt/tomcat/bin/startup.sh 
 	chmod +x /opt/tomcat/bin/shutdown.sh
-	```
+	
 	> Note: you may get below error while starting tomcat incase if you dont install Java   
 	`Neither the JAVA_HOME nor the JRE_HOME environment variable is defined At least one of these environment variable is needed to run this program`
 	1. create link files for tomcat startup.sh and shutdown.sh 
-	```sh
+	
 	ln -s /opt/tomcat/bin/startup.sh /usr/local/bin/tomcatup
 	ln -s /opt/tomcat/bin/shutdown.sh /usr/local/bin/tomcatdown
 	tomcatup
-	```
+	
 	#### Check point :
 	access tomcat application from browser on port 8080  
 	- http://<Public_IP>:8080
 
 	Using unique ports for each application is a best practice in an environment. But tomcat and Jenkins runs on ports number 8080. Hence lets change tomcat port number to 8090. Change port number in conf/server.xml file under tomcat home
-	```sh
+	
 	cd /opt/tomcat/conf
 	# update port number in the "connecter port" field in server.xml
 	# restart tomcat after configuration update
 	tomcatdown
 	tomcatup
-	```
+	
 
 
 
@@ -160,10 +160,10 @@ BUILD CODE
 	- http://<Public_IP>:8090
 
 	1. now application is accessible on port 8090. but tomcat application doesnt allow to login from browser. changing a default parameter in context.xml does address this issue
-	```sh
+	
 	#search for context.xml
 	find / -name context.xml
-	```
+
 	1. above command gives 3 context.xml files. comment (<!-- & -->) `Value ClassName` field on files which are under webapp directory. 
 	After that restart tomcat services to effect these changes (comment it out)
 
@@ -172,17 +172,17 @@ BUILD CODE
 
 
 	At the time of writing this lecture below 2 files are updated. 
-	```sh 
+	
 	/opt/tomcat/webapps/host-manager/META-INF/context.xml
 	/opt/tomcat/webapps/manager/META-INF/context.xml
 	
 	# Restart tomcat services
 	tomcatdown  
 	tomcatup
-	```
+	
 	1. Update users information in the tomcat-users.xml file
 	goto tomcat home directory and Add below users to conf/tomcat-users.xml file
-	```sh
+	
 		<role rolename="manager-gui"/>
 		<role rolename="manager-script"/>
 		<role rolename="manager-jmx"/>
@@ -190,39 +190,39 @@ BUILD CODE
 		<user username="admin" password="admin" roles="manager-gui, manager-script, manager-jmx, manager-status"/>
 		<user username="deployer" password="deployer" roles="manager-script"/>
 		<user username="tomcat" password="s3cret" roles="manager-gui"/>
-	```
+	
 	1. Restart serivce and try to login to tomcat application from the browser. This time it should be Successful
-
+	```
 # 3 Setup Docker Sever
-
+	```sh
 	### Pre-requisites
 	1. Amazon Linux EC2 Instance
 
 	## Installation Steps
 
 	1. Install docker and start docker services
-	```sh 
+	
 	yum install docker -y
 	docker --version 
 	
 	# start docker services
 	service docker start
 	service docker status
-	```
+	
 	1. Create a user called dockeradmin
-	```sh
+	
 	useradd dockeradmin
 	passwd dockeradmin
-	```
+	
 	1. add a user to docker group to manage docker 
-	```
+	
 	usermod -aG docker dockeradmin
-	```
+	
 	### Validation test
 	1. Create a tomcat docker container by pulling a docker image from the public docker registry
-	```sh
+	
 	docker run -d --name test-tomcat-server -p 8090:8080 tomcat:latest
-	```
+	
 
 	## Docker Installation on CentOS server
 	##### Referance URL : https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-repository
@@ -232,15 +232,15 @@ BUILD CODE
 
 	1. Install the required packages.
 
-	```sh 
+	
 	sudo yum install -y yum-utils \
 	device-mapper-persistent-data \
 	lvm2
-	```
+	
 	
 	1. Use the following command to set up the stable repository.
 	
-	```sh 
+	
 	sudo yum-config-manager \
 	--add-repo \
 	https://download.docker.com/linux/centos/docker-ce.repo
@@ -249,25 +249,26 @@ BUILD CODE
 	### INSTALLING DOCKER CE
 
 	1. Install the latest version of Docker CE.
-	```sh 
+	
 	sudo yum install docker-ce
-	```
+	
 
 	Note: If prompted to accept the GPG key, verify that the fingerprint matches 
 	060A 61C5 1B55 8A7F 742B 77AA C52F EB6B 621E 9F35, and if so, accept it.
 
 	1. Start Docker.
-	```sh 
+	
 	sudo systemctl start docker
-	```
+	
 
 	1. Verify that docker is installed correctly by running the hello-world image.
-	```sh
+	
 	sudo docker run hello-world
+	
 	```
 
 #	4 setup Ansible Server
-
+	```sh
 	# Ansible Installation
 
 	Ansible is an open-source automation platform. It is very, very simple to set up and yet powerful. Ansible can help you with configuration management, application deployment, task automation.
@@ -280,38 +281,38 @@ BUILD CODE
 	#### on Amazon EC2 instance
 
 	1. Install python and python-pip
-	```sh
+	
 	yum install python
 	yum install python-pip
-	```
+
 	1. Install ansible using pip check for version
-		```sh
+	
 	pip install ansible
 	ansible --version
-	```
+	
 	
 	1. Create a user called ansadmin (on Control node and Managed host)  
-	```sh
+	
 	useradd ansadmin
 	passwd ansadmin
-	```
+	
 	1. Below command grant sudo access to ansadmin user. But we strongly recommended using "visudo" command if you are aware vi or nano editor.  (on Control node and Managed host)
-	```sh
+	
 	echo "ansadmin ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-	```
+	
 	
 	1. Log in as a ansadmin user on master and generate ssh key (on Control node)
-	```sh 
+	
 	sudo su - ansadmin
 	ssh-keygen
-	```
+	
 	1. Copy keys onto all ansible managed hosts (on Control node)
-	```sh 
+	
 	ssh-copy-id ansadmin@<target-server>
-	```
+	
 
 	1. Ansible server used to create images and store on docker registry. Hence install docker, start docker services and add ansadmin to the docker group. 
-	```sh
+	
 	yum install docker
 	
 	# start docker services 
@@ -321,19 +322,20 @@ BUILD CODE
 	# add user to docker group 
 	usermod -aG docker ansadmin
 
-	```
+	
 	1. Create a directory /etc/ansible and create an inventory file called "hosts" add control node and managed hosts IP addresses to it. 
 	
 	### Validation test
 
 	
 	1. Run ansible command as ansadmin user it should be successful (Master)
-	```sh 
+	
 	ansible all -m ping
+
    ```
 
 #	6 setup EKS bootstrap Server
-
+	```sh
 	Setup Kubernetes on Amazon EKS
 
 	You can follow same procedure in the official  AWS document [Getting started with Amazon EKS – eksctl](https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html)   
@@ -353,23 +355,23 @@ BUILD CODE
 	c. Move kubectl onto /usr/local/bin   
 	d. Test that your kubectl installation was successful    
 
-	```sh 
+	
 		--ignore  curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.21.2/2021-07-05/bin/linux/amd64/kubectl
 	curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.30.2/2024-07-12/bin/linux/amd64/kubectl
 	chmod +x ./kubectl
 	mv ./kubectl /usr/local/bin 
 	kubectl version
-	```
+
 	2. Setup eksctl  ()
 	a. Download and extract the latest release   
 	b. Move the extracted binary to /usr/local/bin   
 	c. Test that your eksclt installation was successful   
 
-	```sh
+	
 	curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 	sudo mv /tmp/eksctl /usr/local/bin
 	eksctl version
-	```
+	
 		
 	3. Create an IAM Role and attache it to EC2 instance    
 	`Note: create IAM user with programmatic access if your bootstrap system is outside of AWS`   
@@ -381,7 +383,7 @@ BUILD CODE
 	Note: Check eksctl documentaiton for [Minimum IAM policies](https://eksctl.io/usage/minimum-iam-policies/)
 	
 	4. Create your cluster and nodes 
-	```sh
+
 	eksctl create cluster --name cluster-name  \
 	--region region-name \
 	--node-type instance-type \
@@ -394,4 +396,4 @@ BUILD CODE
 	--region ap-south-1 \
 	--node-type t2.small 
 	
-		```
+	```
