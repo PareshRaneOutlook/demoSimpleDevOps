@@ -4,6 +4,7 @@
 	amazon-linux-extras install java-openjdk11 -y
 
 ### Install Apache Tomcat
+```sh
 1. Download tomcat packages from  https://tomcat.apache.org/download-80.cgi onto /opt on EC2 instance
 	cd /opt
 	wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.91/bin/apache-tomcat-9.0.91.tar.gz
@@ -12,11 +13,8 @@
 	cd tomcat/bin/
 	startup.sh
 	
-	http://13.232.150.219:8080/
+	http://<Public_IP>:8080
 	
-
-
-vzf /opt/apache-tomcat-<version>.tar.gz
    ```
 1. give executing permissions to startup.sh and shutdown.sh which are under bin. 
    ```sh
@@ -56,7 +54,12 @@ Access tomcat application from browser on port 8090
    find / -name context.xml
    ```
 1. above command gives 3 context.xml files. comment (<!-- & -->) `Value ClassName` field on files which are under webapp directory. 
-After that restart tomcat services to effect these changes. 
+After that restart tomcat services to effect these changes (comment it out)
+
+<!--  <Valve className="org.apache.catalina.valves.RemoteAddrValve"
+         allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" /> -->
+
+
 At the time of writing this lecture below 2 files are updated. 
    ```sh 
    /opt/tomcat/webapps/host-manager/META-INF/context.xml
@@ -89,6 +92,6 @@ goto tomcat home directory and Add below users to conf/tomcat-users.xml file
 		Dashboard >> Manage Jenkins >> Credentials >> System >> Global credentials (unrestricted)
 		
 		
-Create a new Buildand Deploy Maven Project Job
+Create a new Buildand Deploy Maven Project Job ()
 
 

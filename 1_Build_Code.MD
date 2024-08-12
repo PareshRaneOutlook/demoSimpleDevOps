@@ -7,25 +7,34 @@ BUILD CODE
 
 # 1 Setup Jenkins Sever
 		EC2 instance (Linux AMI 2) free tier
+			If its already ready just use command 
+				service jenkins start on mobxterm
+
 		
 		Open mobxterm to access ec2 instance from your portal
 			>> session 
 			>> specify public ip_Address of ec2 
 			>> user name : ec2-user 
 			>> Advance Setting > Use private key > load pem key >> Open
-			>>login
+			>> login
 			
 			
 			>> login as root sudo su - for installation
+
+				cat /etc/hostname/
+
 			
-			>> Jenkins installation from https://www.jenkins.io/download/ >> got for centos /fedora / liniux
+			>> Jenkins installation from https://www.jenkins.io/download/ >> got for centos /fedora / liniux (https://pkg.jenkins.io/redhat-stable/)
+ 				
+			sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+  			sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+
 			  amazon-linux-extras install epel -y
 			  amazon-linux-extras install java-openjdk11 -y
 			  java -version
-			  
 			  yum install jenkins -y
 			  
-			  ccat /var/lib/jenkins/secrets/initialAdminPassword	:	93b4ce93e2854f6d88fdb54e1be09e68
+			  cat /var/lib/jenkins/secrets/initialAdminPassword	:	93b4ce93e2854f6d88fdb54e1be09e68
 
 			  
 			  service jenkins status
@@ -34,21 +43,27 @@ BUILD CODE
 			  open security tcp port 8080
 			  
 			  create sample job just to verify everything works
-			  
-			  ##Integrate Git on Jenkins
+
+# 2 Integrate Git on Jenkins
 			  
 			  install git on Jenkins
 				yum install git -y
 				git --version
+
 			  install git plugin on Jenkins	
-			  Manage Jenkins >> Tools >> Setu 
+
+			  Manage Jenkins >> Manage Plugins >>Installed >> Available >> Github
+
+			  Configure Jenkins
+
+			  Manage Jenkins >> Tools >> Setup 
 			  
 			  
 			  fork git repo
-			  create jenkins job to pull git repo
+			  	create jenkins job to pull git repo(job_pullcodefromgithub)
 			  
 			  ##Integrate Maven with Jenkins
-			  
+# 3 Integrate Maven on Jenkins			  
 			setup Maven on Jenkins Server
 					cd /opt
 					wget https://dlcdn.apache.org/maven/maven-3/3.8.8/binaries/apache-maven-3.8.8-bin.tar.gz
@@ -56,8 +71,7 @@ BUILD CODE
 					mv apache-maven-3.8.8 maven
 					cd bin
 					./mvn -v
-					
-					
+
 			setup env variable java_home, m2, m2_home
 			  		
 					cd ~
@@ -66,7 +80,8 @@ BUILD CODE
 					
 					
 					
-					in another session find / -name java-11-*
+			In another ssh session 
+					find / -name java-11*
 					/usr/lib/jvm/java-11-openjdk-11.0.23.0.9-2.amzn2.0.1.x86_64
 					
 					file content 
@@ -86,14 +101,15 @@ BUILD CODE
 
 	  
 			  
-					
 			Add mavem plugin to Jenkins
-			
+			Manage Jenkins >> Manage Plugins >>Installed >> Available >> maven
+
 			configure maven and java
-				In tools add java_home and maven
+				Manage Jenkins >> Tools >> Setup 
+					In tools add java_home and maven
 				
 			
-			Create new jenkins job for maven project
+			Create new jenkins job for maven project (job_buildmavenproject)
 			
 			set up git repo
 			
