@@ -107,7 +107,7 @@
 
 6. Update Dockerfile to automate deployment process
 
-      login as roon to docker server
+      login as root to docker server
 
          cd /opt
          mkdir docker
@@ -122,6 +122,7 @@
       Change DockerFile and add COPY command to Dockerfile, SAVE
       
          vi Dockerfile
+         
          COPY ./*.war /usr/local/tomcat/webapps
 
          docker run -d --name tomcatv1 -p 8090:8080 tomcat:v1
