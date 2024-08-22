@@ -70,7 +70,7 @@ BUILD CODE
 					tar -xvzf apache-maven-3.8.8-bin.tar.gz
 					mv apache-maven-3.8.8 maven
 					cd bin
-					./mvn -v
+					./mvn -v   (Run this from /opt/maven/bin folder)
 
 			setup env variable java_home, m2, m2_home
 			  		
@@ -102,12 +102,12 @@ BUILD CODE
 	  
 			  
 			Add mavem plugin to Jenkins
-			Manage Jenkins >> Manage Plugins >>Installed >> Available >> maven
+			Manage Jenkins >> Manage Plugins >> Available >> maven
 
 			configure maven and java
 				Manage Jenkins >> Tools >> Setup 
 					In tools add java_home and maven
-				
+			Add maven_home : /opt/maven
 			
 			Create new jenkins job for maven project (job_buildmavenproject)
 			

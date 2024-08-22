@@ -125,6 +125,8 @@
          
          COPY ./*.war /usr/local/tomcat/webapps
 
+         docker build -t tomcat:v1 .
+
          docker run -d --name tomcatv1 -p 8090:8080 tomcat:v1
 
       Login using browser
@@ -144,7 +146,7 @@
       docker rm containerID
       docker image rm imageID
 
-   Updated Container job created in previous step and Write following in exec section as you can't rerun this
+   Updated Container job created in previous step and Write following in "exec" section as you can't rerun this
 
       cd /opt/docker;
       docker build -t regapp:v1 .;

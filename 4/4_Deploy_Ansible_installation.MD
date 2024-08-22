@@ -212,7 +212,7 @@ Ansible is an open-source automation platform. It is very, very simple to set up
 
    Check and run
 
-      ansible-playbook regapp.yml  --check
+      ansible-playbook regapp.yml --check
       ansible-playbook regapp.yml
 
 
@@ -233,13 +233,13 @@ Ansible is an open-source automation platform. It is very, very simple to set up
       docker rm containerid
       docker image rm imageid
 
-   create new file deploy_regapp.yml on ansible server
+   create new file deploy_regapp.yml on ansible server as per content deploy_regapp_1.yml
 
       sudo vi deploy_regapp.yml
       ansible-playbook deploy_regapp.yml --check   
       ansible-playbook deploy_regapp.yml           >> this will fail due to access issue on docker
 
-   Login to docker servre and run following
+   Login to docker server and run following
       chmod 777 var/run/docker.sock
    
    Run on ansible server
