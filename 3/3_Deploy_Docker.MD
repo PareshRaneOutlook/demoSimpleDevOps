@@ -72,7 +72,7 @@
 
    Add user as sudoer
 
-      visudo
+         
 	   
   	   add following text at last line(shift + g), press escape, enter :wq
 

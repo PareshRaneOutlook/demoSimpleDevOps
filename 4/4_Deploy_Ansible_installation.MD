@@ -240,7 +240,7 @@ Ansible is an open-source automation platform. It is very, very simple to set up
       ansible-playbook deploy_regapp.yml           >> this will fail due to access issue on docker
 
    Login to docker server and run following
-      chmod 777 var/run/docker.sock
+      chmod 777 /var/run/docker.sock
    
    Run on ansible server
       ansible-playbook deploy_regapp.yml 
